@@ -14,9 +14,18 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
-  const [tasks, setTasks] = useState(props.tasks)
+  const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState('All');
 
+  //local storage
+  /* useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+  
+  useEffect(() => {
+    localStorage.getItem("tasks", setTasks(JSON.parse(tasks)));
+  }, []);
+  */
   function addTask(name) {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     setTasks([...tasks, newTask]);

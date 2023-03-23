@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import usePrevious from './usePrevious';
 
 export default function Todo(props) {
+    const completedStyle = {
+        fontStyle: "italic",
+        color: "#cdcdcd",
+        textDecoration: "line-through",
+    }
+
     const [isEditing, setEditing] = useState(false);
     const [newName, setNewName] = useState('');
 
@@ -61,8 +67,9 @@ export default function Todo(props) {
                     type="checkbox"
                     defaultChecked={props.completed}
                     onChange={() => props.toggleTaskCompleted(props.id)}
+                    
                 />
-                <label className="todo-label" htmlFor={props.id}>
+                <label className="todo-label" htmlFor={props.id} style={props.completed ? completedStyle : null}>
                     {props.name}
                 </label>
             </div>
