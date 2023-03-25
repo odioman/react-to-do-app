@@ -13,19 +13,24 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-function App(props) {
-  const [tasks, setTasks] = useState(props.tasks);
+function App() {
+  const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('All');
 
   //local storage
-  /* useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-  
   useEffect(() => {
-    localStorage.getItem("tasks", setTasks(JSON.parse(tasks)));
+    const local = localStorage.getItem("tasks");
+
+    if (local?.length) {
+      const localParse = JSON.parse(local); 
+      setTasks(localParse);
+    }  
   }, []);
-  */
+  
+  function handleSave() {
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+  }  
+
   function addTask(name) {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     setTasks([...tasks, newTask]);
@@ -44,6 +49,7 @@ function App(props) {
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
+    localStorage.removeItem("tasks");
   }
 
   function editTask(id, newName) {
@@ -100,13 +106,16 @@ function App(props) {
       {filterList}
       </div>
       <h2 id="list-heading" tabIndex="-1" ref={listHeadingRef}>{headingText}</h2>
-      <ul
-        role="list"
+      <li> 
+        <ul
         className="todo-list stack-large stack-exception"
         aria-labelledby="list-heading">
          {taskList}
         </ul>
+      </li>
+      <button onClick={handleSave}>Save</button>
     </div>
+    
   )
 }
 
